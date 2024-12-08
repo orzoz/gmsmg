@@ -1,6 +1,16 @@
+use arboard::Clipboard;
+use serde::{Deserialize, Serialize};
 use std::process::Command;
+#[derive(Debug, Serialize, Deserialize)]
+struct Msg {
+    r#type: String,
+    scope: Option<String>,
+    subject: String,
+    body: Option<String>,
+}
 
-fn main() {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // first check if there are any cached changes in the working tree
     let output = Command::new("git")
         .arg("diff")
@@ -9,7 +19,7 @@ fn main() {
         .expect("please install git");
     if !output.status.success() {
         eprintln!("error: git diff --cached failed");
-        return;
+        return Ok(());
     }
     let mut stdout = String::from_utf8_lossy(&output.stdout).to_string();
     if stdout.is_empty() {
@@ -20,9 +30,27 @@ fn main() {
             .expect("please install git");
         if !output.status.success() {
             eprintln!("error: git diff failed");
-            return;
+            return Ok(());
         }
         stdout = String::from_utf8_lossy(&output.stdout).to_string();
+    };
+    let client = reqwest::Client::new();
+    let resp: Msg = client
+        .post("https://noisy-bison-44.deno.dev")
+        .body(stdout)
+        .send()
+        .await?
+        .json()
+        .await?;
+    print!("{}", resp.r#type);
+    if let Some(scoop) = resp.scope {
+        print!("({scoop})");
     }
-    println!("{}", stdout);
+    println!(":{}", resp.subject);
+    if let Some(body) = resp.body {
+        println!("\n{body}");
+    }
+    let mut clipboard = Clipboard::new()?;
+    clipboard.set_text(resp.subject)?;
+    Ok(())
 }
