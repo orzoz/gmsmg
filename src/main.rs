@@ -35,6 +35,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             return Ok(());
         }
         stdout = String::from_utf8_lossy(&output.stdout).to_string();
+        if stdout.is_empty() {
+            println!("no changes to commit");
+            return Ok(());
+        }
     };
     let client = reqwest::Client::new();
     let resp: Msg = client
