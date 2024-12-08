@@ -1,3 +1,5 @@
+#![feature(let_chains)]
+
 use arboard::Clipboard;
 use serde::{Deserialize, Serialize};
 use std::process::Command;
@@ -36,14 +38,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
     let client = reqwest::Client::new();
     let resp: Msg = client
-        .post("https://noisy-bison-44.deno.dev")
+        .post("https://gmsmg.orzoz.com")
         .body(stdout)
         .send()
         .await?
         .json()
         .await?;
     print!("{}", resp.r#type);
-    if let Some(scoop) = resp.scope {
+    if let Some(scoop) = resp.scope
+        && !scoop.is_empty()
+    {
         print!("({scoop})");
     }
     println!(":{}", resp.subject);
