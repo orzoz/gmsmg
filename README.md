@@ -19,11 +19,16 @@ msg will be copied to clipboard automatically.
 
 You can set environment variables to configure.
 
-- `GMSMG_API_BASE`: API base URL. Default is `https://api.github.com`.
-- `GMSMG_API_MODEL`: API model. Default is `o1-preview`.
-- `GMSMG_API_KEY`: API key. Default is empty.
+| Variable            | Description  | Default                  |
+|---------------------|--------------|--------------------------|
+| `GMSMG_API_BASE`    | API base URL | `https://api.github.com` |
+| `GMSMG_API_MODEL`   | API model    | `o1-preview`             |
+| `GMSMG_API_KEY`     | API key      | empty                    |
+| `GMSMG_PROMPT_FILE` | Prompt file  | empty                    |
 
-PS: You are free to use the default configuration to use gmsmg api to create other tools.
+### PS:
+1. look up `prompt/diff.md` to write your own prompt.
+2. You are free to use the default configuration to use gmsmg api to create other tools.
 
 ## Thanks
 
