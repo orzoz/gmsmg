@@ -41,6 +41,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     };
     let client = reqwest::Client::new();
+    // TODO: move prompt to here
     let resp: Msg = client
         .post("https://gmsmg.orzoz.com")
         .body(stdout)
