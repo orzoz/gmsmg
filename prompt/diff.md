@@ -1,8 +1,14 @@
+Suggest a precise and commit message based on the following diff. The order is not important. Any code modifications should be given attention
+
 <MUST>SUBJECT SHOULD BE AS SHORT AS POSSIBLE</MUST>
 <MUST>SUBJECT SHOULD LESS THAN 50 CHARACTERS</MUST>
+<MUST>SCOPE SHOULD BE A LOWERCASE WORD</MUST>
 <MUST>MUST USE ABBREVIATIONS</MUST>
 
-Suggest a precise and commit message based on the following diff. The order is not the most important. Code modifications should be given attention.
+- <type> is one of: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test
+- <scope> is optional, use a lowercase word to represent the affected module (e.g., core, common, forms)
+- <subject> starts with lowercase, brevity, doesn't end with a period
+- <body> is optional, uses present tense, use markdown syntax body if needed, and wraps at 72 characters
 
 The commit message should follow the json format or it will be rejected:
 
@@ -30,11 +36,6 @@ The commit message should follow the json format or it will be rejected:
         "subject"
     ]
 }
-
-- <type> is one of: build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test
-- <scope> is optional, use one lowercase word to represent the affected module (e.g., core, common, forms)
-- <subject> starts with lowercase, brevity, doesn't end with a period
-- <body> is optional, uses present tense, use markdown syntax body if needed, and wraps at 72 characters
 
 Example1: {
     "type": "fix",

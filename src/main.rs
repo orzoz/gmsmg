@@ -9,7 +9,7 @@ use async_openai::{
     },
 };
 use serde::{Deserialize, Serialize};
-use std::{env, fmt::Display, process::Command};
+use std::{env, fmt::Display, io::Read, process::Command};
 #[derive(Debug, Serialize, Deserialize)]
 struct Msg {
     r#type: String,
@@ -34,7 +34,6 @@ impl Display for Msg {
     }
 }
 
-// TODO: support custom prompt
 const PROMPT: &str = include_str!("../prompt/diff.md");
 
 #[tokio::main]
@@ -49,6 +48,15 @@ async fn diff() -> Result<(), Box<dyn std::error::Error>> {
         env::var("GMSMG_API_BASE").unwrap_or_else(|_| "https://gmsmg.orzoz.com/v1".to_string());
     let api_model = env::var("GMSMG_API_MODEL").unwrap_or_else(|_| "o1-preview".to_string());
     let api_key = env::var("GMSMG_API_KEY").unwrap_or_else(|_| "".to_string());
+    let prompt_file = env::var("GMSMG_PROMPT_FILE").unwrap_or_else(|_| "".to_string());
+    let prompt = if !prompt_file.is_empty() {
+        let mut file = std::fs::File::open(prompt_file)?;
+        let mut diff = String::new();
+        file.read_to_string(&mut diff)?;
+        diff
+    } else {
+        PROMPT.to_string()
+    };
 
     // first check if there are any cached changes in the working tree
     let output = Command::new("git")
@@ -84,13 +92,13 @@ async fn diff() -> Result<(), Box<dyn std::error::Error>> {
     let request = CreateChatCompletionRequestArgs::default()
         .max_tokens(1000u32)
         .model(api_model)
-        .temperature(0.3)
+        .temperature(0.6)
         .top_p(1.0)
         .frequency_penalty(0.6)
-        .presence_penalty(1.2)
+        .presence_penalty(1.0)
         .messages([
             ChatCompletionRequestSystemMessageArgs::default()
-                .content(PROMPT)
+                .content(prompt)
                 .build()?
                 .into(),
             ChatCompletionRequestUserMessageArgs::default()
