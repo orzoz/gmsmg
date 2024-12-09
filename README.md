@@ -19,12 +19,12 @@ msg will be copied to clipboard automatically.
 
 You can set environment variables to configure.
 
-| Variable            | Description  | Default                  |
-|---------------------|--------------|--------------------------|
-| `GMSMG_API_BASE`    | API base URL | `https://api.github.com` |
-| `GMSMG_API_MODEL`   | API model    | `o1-preview`             |
-| `GMSMG_API_KEY`     | API key      | empty                    |
-| `GMSMG_PROMPT_FILE` | Prompt file  | empty                    |
+| Variable            | Description  | Default                      |
+|---------------------|--------------|------------------------------|
+| `GMSMG_API_BASE`    | API base URL | `https://gmsmg.orzoz.com/v1` |
+| `GMSMG_API_MODEL`   | API model    | `o1-preview`                 |
+| `GMSMG_API_KEY`     | API key      | empty                        |
+| `GMSMG_PROMPT_FILE` | Prompt file  | empty                        |
 
 ### PS:
 1. look up `prompt/diff.md` to write your own prompt.
